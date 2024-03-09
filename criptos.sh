@@ -1,5 +1,7 @@
 #!/bin/bash
 
+clear 
+
 cripto_file='/home/azureuser/apps/criptomonedas/cripto_file.txt'
 timestamp="$(date +'%Y%m%d_%I_%M_%p')"
 
@@ -20,12 +22,17 @@ cardano_datos=$(curl -s "$cardano_url")
 cardano_amount=$(grep -o 'data-last-price="[^"]*' <<< "$cardano_datos" | sed 's/data-last-price="//;s/"$//' | awk '{printf "%.2f", $1}')
 
 echo "Actualizando el archivo..."
+echo  ""
+echo -e "Current cripto Price\n"
+
 if [ ! -f "$cripto_file" ]; then
     touch /home/azureuser/apps/criptomonedas/cripto_file.txt
-    echo -e "Fecha\t\t\tBitcoin\t\tEthereum\tCardano" > /home/azureuser/apps/criptomonedas/cripto_file.txt
-    echo -e "$timestamp\t$bitcoin_amount\t$ethereum_amount\t$cardano_amount" >> /home/azureuser/apps/criptomonedas/cripto_file.txt
+    echo -e "Fecha\t\t\tBitcoin\t\tEthereum\tCardano" | tee /home/azureuser/apps/criptomonedas/cripto_file.txt
+    echo -e "$timestamp\t$bitcoin_amount\t$ethereum_amount\t$cardano_amount" | tee -a /home/azureuser/apps/criptomonedas/cripto_file.txt
 else
-    echo -e "$timestamp\t$bitcoin_amount\t$ethereum_amount\t$cardano_amount" >> /home/azureuser/apps/criptomonedas/cripto_file.txt
+    echo -e "Fecha\t\t\tBitcoin\t\tEthereum\tCardano"	
+    echo -e "$timestamp\t$bitcoin_amount\t$ethereum_amount\t$cardano_amount" | tee -a /home/azureuser/apps/criptomonedas/cripto_file.txt
 fi
 
+echo  ""
 echo "Programa ejecutado con exito."
