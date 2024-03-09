@@ -2,8 +2,10 @@
 
 clear 
 
-cripto_file='/home/azureuser/apps/criptomonedas/cripto_file.txt'
 timestamp="$(date +'%Y%m%d_%I_%M_%p')"
+time_corto=$(egrep -o '^[0-9]{8}' <<< "$timestamp")
+cripto_file="/home/azureuser/apps/criptomonedas/cripto_file_$time_corto.txt"
+
 
 echo "Iniciando el programa..."
 echo "Descargando bitcoins data..."
@@ -26,12 +28,12 @@ echo  ""
 echo -e "Current cripto Price\n"
 
 if [ ! -f "$cripto_file" ]; then
-    touch /home/azureuser/apps/criptomonedas/cripto_file.txt
-    echo -e "Fecha\t\t\tBitcoin\t\tEthereum\tCardano" | tee /home/azureuser/apps/criptomonedas/cripto_file.txt
-    echo -e "$timestamp\t$bitcoin_amount\t$ethereum_amount\t$cardano_amount" | tee -a /home/azureuser/apps/criptomonedas/cripto_file.txt
+    touch /home/azureuser/apps/criptomonedas/cripto_file_$time_corto.txt
+    echo -e "Fecha\t\t\tBitcoin\t\tEthereum\tCardano" | tee /home/azureuser/apps/criptomonedas/cripto_file_$time_corto.txt
+    echo -e "$timestamp\t$bitcoin_amount\t$ethereum_amount\t$cardano_amount" | tee -a /home/azureuser/apps/criptomonedas/cripto_file_$time_corto.txt
 else
     echo -e "Fecha\t\t\tBitcoin\t\tEthereum\tCardano"	
-    echo -e "$timestamp\t$bitcoin_amount\t$ethereum_amount\t$cardano_amount" | tee -a /home/azureuser/apps/criptomonedas/cripto_file.txt
+    echo -e "$timestamp\t$bitcoin_amount\t$ethereum_amount\t$cardano_amount" | tee -a /home/azureuser/apps/criptomonedas/cripto_file_$time_corto.txt
 fi
 
 echo  ""
